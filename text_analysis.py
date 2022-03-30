@@ -11,17 +11,19 @@ nltk.download('vader_lexicon')
 from WordBank import word_bank
 
 def find_occurances_of_keyword(keyword,text):
-    '''
+    """
     Find_occurances_of_keywords
     Find occurrences of the selected keyword within the text provided 
     then return a list of indexed occurrences of the word within the text.
-    Inputs: 
-        Keyword: String, the selected keyword.
-        Text: The input of literary work.
-    Returns:
-        list_of_indexes: Returns a list of indexed occurrences.
 
-    '''
+    Args: 
+        Keyword: String, the selected keyword.
+        Text: A tokenized text in the form of a list of strings.
+
+    Returns:
+        list_of_indexes: Returns a list of indexes for each occurance of the
+        keyword.
+    """
     list_of_indexes=[]
     for index,word in enumerate(text):
         if keyword == word:
@@ -61,16 +63,16 @@ def find_sentences_with_keyword(keyword, text):
     return sentences
 
 def look_for_adjectives(word,sentence):
-    '''
+    """
     Look_for_adjectives
     This function parses through a provided sentence and identifies
     if the word is an adjective. The function then returns a list of adjectives.
     Inputs:
-    Word: String consisting of ????
-    Sentence: A string consisting of the provided sentence.
+        Word: String representing the target keyword to be described.
+        Sentence: A string consisting of the provided sentence.
     Returns:
-    Adjectives: a list of adjectives.
-    '''
+        Adjectives: a list of strings representing adjectives.
+    """
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(sentence)
     adjectives=[]
@@ -92,10 +94,10 @@ def find_adj_in_all_sentences(keyword,path):
     The function opens a file of text, parses through the text,
     and adds any adjectives to a string.
     Inputs:
-    Keyword: String of a set keyword
-    Path: a string of a path to a file.
+        Keyword: String of a set keyword
+        Path: a string of a path to a file.
     Returns
-    Adj: list of adjectives
+        Adj: list of adjectives
 
     '''
     with open(path) as book:
@@ -145,3 +147,12 @@ def sentiment_countifier_individual(adjectives):
     neu_score= sum(neu_scores) / len(neu_scores)
     neg_score= sum(neg_scores) / len(neg_scores)    
     return [pos_score,neu_score,neg_score]
+
+word_categories = ["lawyer", "nurse", "female servant", "tailor", "governess",
+"clerk", "craftsman", "businessman", "street peddlar", "orphan",
+"male servant", "banker", "criminal", "navvy", "nightman", "farmer", 
+"innkeeper", "miner", "waiter", "clergyman", "clerk", "washerwoman", 
+"governess", "student", "doctor", "soldier", "high-rank military", "policeman",
+"fisherman", "shoolteacher", "politician"]
+
+print(len(word_categories))

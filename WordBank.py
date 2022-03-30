@@ -16,7 +16,7 @@ word_bank = [
 ["ostler", "innkeeper"],
 ["tailor", "couturier", "costumier"],
 ["craftsman", "potter", "carpenter", "toymaker", "cobbler", "mason", "stonemason", "blacksmith"],
-["seamstress", "seamstresses"]
+["seamstress", "seamstresses"],
 ["servant", "manservant", "coachman", "butler", "footman", "grooms", "houseboys", "housemen", "men", "menservants", "servitors", "valets"],
 ["nurse", "nursemaid"],
 ["governess", "governesses"],

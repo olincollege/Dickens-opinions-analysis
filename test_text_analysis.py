@@ -2,7 +2,7 @@
 import nltk
 import os
 
-from text_analysis import find_sentences_with_keyword
+from text_analysis import *
 
 sample_text1 = "It was a tall tree. The squirrel lost its tiny hat. It had to \
     climb down the tree to find the hat. 'That's unfortunate!'"
@@ -11,15 +11,8 @@ sample_text2 = "Miriam bought a deliciously moist chapstick from Trader \
     Johan's. Malvina's mother's crispy crackers make a distracted \
     Miriam very happy."
 sample_tokens2 = nltk.word_tokenize(sample_text2)
-
-def test_find_sentences_with_keyword():
-    """
-    Test that the function correctly finds all sentences containing the keyword
-    """
-    assert find_sentences_with_keyword("hat", sample_tokens1) == ["The squirrel \
-        lost its tiny hat.","It had to climb down the tree to find the hat."]
-    assert find_sentences_with_keyword("crackers", sample_tokens2) == ["Malvina's mother's crispy crackers make a distracted \
-    Miriam very happy."]
+sample_text3 = "She had sharp and hairy elbows."
+sample_tokens3 = nltk.word_tokenize(sample_text3)
 
 def test_find_occurances_of_keyword():
     """
@@ -35,6 +28,16 @@ def test_find_occurances_of_keyword():
     # Test that searching for a word not in the string returns an empty string
     assert find_occurances_of_keyword("bread", sample_tokens1) == []
 
+def test_find_sentences_with_keyword():
+    """
+    Test that the function correctly finds all sentences containing the keyword
+    """
+    assert find_sentences_with_keyword("hat", sample_tokens1) == ["The squirrel \
+        lost its tiny hat.","It had to climb down the tree to find the hat."]
+    assert find_sentences_with_keyword("crackers", sample_tokens2) == ["Malvina's mother's crispy crackers make a distracted \
+    Miriam very happy."]
+
+# Obsolete
 def test_find_adjectives():
     """
     Check that the function correctly identifies the indexes all adjectives in
@@ -43,9 +46,9 @@ def test_find_adjectives():
     parts_of_speech1 = nltk.pos_tag(sample_tokens1)
     parts_of_speech2 = nltk.pos_tag(sample_tokens2)
     # Test find adjectives for a single word
-    assert find_adjectives([4], parts_of_speech) == ["tall"]
+    assert find_adjectives([4], parts_of_speech1) == ["tall"]
     # Test find adjectives for multiple words
-    assert find_adjectives([4, 11], parts_of_speech) == ["tall", "tiny"]
+    assert find_adjectives([4, 11], parts_of_speech1) == ["tall", "tiny"]
     # Test find adjectives in a string with multiple other adjectives.
     assert find_adjectives([18], parts_of_speech2) == ["crispy"]
     # Test that a word that is not a noun returns no adjectives.
@@ -64,6 +67,7 @@ def test_look_for_adjectives():
     assert find_adjectives("moist", sample_text2[0:11]) == []
     # Check that an adjective separated by one word from keyword is found.
     assert find_adjectives("Miriam", sample_text2[12:27]) == ["distracted", "happy"]
+    assert find_adjectives("elbows", sample_text3[:]) == ["sharp", "hairy"]
 
 
 def test_expand_keywords():
