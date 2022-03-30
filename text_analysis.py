@@ -11,6 +11,17 @@ nltk.download('vader_lexicon')
 from WordBank import word_bank
 
 def find_occurances_of_keyword(keyword,text):
+    '''
+    Find_occurances_of_keywords
+    Find occurrences of the selected keyword within the text provided 
+    then return a list of indexed occurrences of the word within the text.
+    Inputs: 
+        Keyword: String, the selected keyword.
+        Text: The input of literary work.
+    Returns:
+        list_of_indexes: Returns a list of indexed occurrences.
+
+    '''
     list_of_indexes=[]
     for index,word in enumerate(text):
         if keyword == word:
@@ -50,6 +61,16 @@ def find_sentences_with_keyword(keyword, text):
     return sentences
 
 def look_for_adjectives(word,sentence):
+    '''
+    Look_for_adjectives
+    This function parses through a provided sentence and identifies
+    if the word is an adjective. The function then returns a list of adjectives.
+    Inputs:
+    Word: String consisting of ????
+    Sentence: A string consisting of the provided sentence.
+    Returns:
+    Adjectives: a list of adjectives.
+    '''
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(sentence)
     adjectives=[]
@@ -66,6 +87,17 @@ def look_for_adjectives(word,sentence):
     return adjectives
 
 def find_adj_in_all_sentences(keyword,path):
+    '''
+    Find_adj_in_all_sentences
+    The function opens a file of text, parses through the text,
+    and adds any adjectives to a string.
+    Inputs:
+    Keyword: String of a set keyword
+    Path: a string of a path to a file.
+    Returns
+    Adj: list of adjectives
+
+    '''
     with open(path) as book:
         contents = book.read()
         text = nltk.word_tokenize(contents)
