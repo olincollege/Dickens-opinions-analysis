@@ -2,6 +2,8 @@
 import nltk
 import os
 
+from text_analysis import find_sentences_with_keyword
+
 sample_text1 = "It was a tall tree. The squirrel lost its tiny hat. It had to \
     climb down the tree to find the hat. 'That's unfortunate!'"
 sample_tokens1 = nltk.word_tokenize(sample_text1)
@@ -16,6 +18,8 @@ def test_find_sentences_with_keyword():
     """
     assert find_sentences_with_keyword("hat", sample_tokens1) == ["The squirrel \
         lost its tiny hat.","It had to climb down the tree to find the hat."]
+    assert find_sentences_with_keyword("crackers", sample_tokens2) == ["Malvina's mother's crispy crackers make a distracted \
+    Miriam very happy."]
 
 def test_find_occurances_of_keyword():
     """
@@ -59,7 +63,7 @@ def test_look_for_adjectives():
     assert find_adjectives("It", sample_text1[6:12]) == []
     assert find_adjectives("moist", sample_text2[0:11]) == []
     # Check that an adjective separated by one word from keyword is found.
-    assert find_adjectives("Miriam", sample_text2[12:27]) == ["happy"]
+    assert find_adjectives("Miriam", sample_text2[12:27]) == ["distracted", "happy"]
 
 
 def test_expand_keywords():
