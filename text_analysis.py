@@ -202,11 +202,4 @@ def sentiment_countifier_individual(adjectives):
     neg_score= sum(neg_scores) / len(neg_scores)    
     return [pos_score,neu_score,neg_score]
 
-word_categories = ["lawyer", "nurse", "female servant", "tailor", "governess",
-"clerk", "craftsman", "businessman", "street peddlar", "orphan",
-"male servant", "banker", "criminal", "navvy", "nightman", "farmer", 
-"innkeeper", "miner", "waiter", "clergyman", "clerk", "washerwoman", 
-"governess", "student", "doctor", "soldier", "high-rank military", "policeman",
-"fisherman", "shoolteacher", "politician"]
 
-print(len(word_categories))
