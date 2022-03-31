@@ -13,6 +13,7 @@ from WordBank import word_bank
 def find_occurances_of_keyword(keyword,text):
     """
     Find_occurances_of_keywords
+    
     Find occurrences of the selected keyword within the text provided 
     then return a list of indexed occurrences of the word within the text.
 
@@ -32,6 +33,8 @@ def find_occurances_of_keyword(keyword,text):
 
 def find_sentences_with_keyword(keyword, text):
     """
+    find_sentences_with_keyword
+    
     Find the sentence that contextualizes the occurence of a keyword and return a list
     of indices that represent the range of each sentence containing the keyword.
     
@@ -65,11 +68,14 @@ def find_sentences_with_keyword(keyword, text):
 def look_for_adjectives(word,sentence):
     """
     Look_for_adjectives
+    
     This function parses through a provided sentence and identifies
     if the word is an adjective. The function then returns a list of adjectives.
+    
     Inputs:
         Word: String representing the target keyword to be described.
         Sentence: A string consisting of the provided sentence.
+    
     Returns:
         Adjectives: a list of strings representing adjectives.
     """
@@ -91,14 +97,15 @@ def look_for_adjectives(word,sentence):
 def find_adj_in_all_sentences(keyword,path):
     '''
     Find_adj_in_all_sentences
+    
     The function opens a file of text, parses through the text,
     and adds any adjectives to a string.
+    
     Inputs:
         Keyword: String of a set keyword
         Path: a string of a path to a file.
     Returns
         Adj: list of adjectives
-
     '''
     with open(path) as book:
         contents = book.read()
@@ -110,6 +117,15 @@ def find_adj_in_all_sentences(keyword,path):
     return adj
 
 def expand_keywords(keywords_):
+    '''
+    The function adds plural and capitalized forms of words to the keywords list.
+    
+    Inputs:
+        keywords_:  a list of keywords.
+    
+    Returns:
+        new_keywords: a list of keywords.
+    '''
     new_keywords=keywords_[:]
     for word in keywords_:
         new_keywords.append(word+"s")
@@ -118,6 +134,18 @@ def expand_keywords(keywords_):
     return new_keywords
 
 def find_adj_in_all_books(keywords):
+    '''
+    find_adj_in_all_books
+    
+    The function creates of a list of all the adjectives that
+    are present in the books provided.
+    
+    Inputs:
+        Keywords: A string of keywords
+        
+    Returns:
+        Adj: A list consisting of adjectives
+    '''
     keywords=expand_keywords(keywords)
     adj=[]
     for word in keywords:
@@ -126,6 +154,18 @@ def find_adj_in_all_books(keywords):
         return(adj)
         
 def find_adj_all_words_all_books(wordbank):
+    '''
+    find_adj_all_words_all_books
+    
+    This function creates a list of adjectives that are
+    found both in the user provided word bank and in the source text.
+    
+    Inputs:
+        Wordbank: List of words that have been selected by the user. It is composed of a list of occupational category.
+    
+    Returns:
+        Adj_list: List of adjectives that have been found in the books. 
+    '''
     adj_list = []
     for list in wordbank:
         adj_list.append(find_adj_in_all_books(list))
@@ -133,6 +173,20 @@ def find_adj_all_words_all_books(wordbank):
 
 
 def sentiment_countifier_individual(adjectives):
+    '''
+    sentiment_countifier_individual
+    
+    The function assigns positive, negative, and neutral 
+    score values to provided adjectives and then returns the values.
+    
+    Inputs:
+        Adjectives: a list of adjectives.
+    
+    Returns:
+        Pos_score: The sentiment of the adjective on how positive it is.
+        Neu_scores:The sentiment of the adjective on how neutral it is.
+        Neg_scores:The sentiment of the adjective on how negative it is.
+    '''
     sia = SentimentIntensityAnalyzer()
     pos_scores=[]    
     neu_scores=[]    
