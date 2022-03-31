@@ -103,8 +103,8 @@ def find_adj_in_all_sentences(keyword,path):
     of these sentences to get a complete list of adjectives.
     
     Args:
-        Keyword: String of a keyword that is being examined
-        Path: A string that represents a path to a book
+        keyword: String of a keyword that is being examined
+        path: A string that represents a path to a book
     Returns
         A list of adjectives in the book which are connected to the
         keyword.
