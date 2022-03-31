@@ -12,8 +12,6 @@ from WordBank import word_bank
 
 def find_occurances_of_keyword(keyword,text):
     """
-    Find_occurances_of_keywords
-    
     Find occurrences of the selected keyword within the text provided 
     then return a list of indexed occurrences of the word within the text.
 
@@ -33,8 +31,6 @@ def find_occurances_of_keyword(keyword,text):
 
 def find_sentences_with_keyword(keyword, text):
     """
-    find_sentences_with_keyword
-    
     Find the sentence that contextualizes the occurence of a keyword and return a list
     of indices that represent the range of each sentence containing the keyword.
     
@@ -67,8 +63,6 @@ def find_sentences_with_keyword(keyword, text):
 
 def look_for_adjectives(word,sentence):
     """
-    Look_for_adjectives
-    
     This function parses through a provided sentence and identifies
     if the word is an adjective. The function then returns a list of adjectives.
     
@@ -96,8 +90,6 @@ def look_for_adjectives(word,sentence):
 
 def find_adj_in_all_sentences(keyword,path):
     '''
-    Find_adj_in_all_sentences
-    
     The function opens a file of text, parses through the text,
     and adds any adjectives to a string.
     
@@ -135,8 +127,6 @@ def expand_keywords(keywords_):
 
 def find_adj_in_all_books(keywords):
     '''
-    find_adj_in_all_books
-    
     The function creates of a list of all the adjectives that
     are present in the books provided.
     
@@ -155,8 +145,6 @@ def find_adj_in_all_books(keywords):
         
 def find_adj_all_words_all_books(wordbank):
     '''
-    find_adj_all_words_all_books
-    
     This function creates a list of adjectives that are
     found both in the user provided word bank and in the source text.
     
@@ -174,8 +162,6 @@ def find_adj_all_words_all_books(wordbank):
 
 def sentiment_countifier_individual(adjectives):
     '''
-    sentiment_countifier_individual
-    
     The function assigns positive, negative, and neutral 
     score values to provided adjectives and then returns the values.
     
@@ -184,8 +170,8 @@ def sentiment_countifier_individual(adjectives):
     
     Returns:
         Pos_score: The sentiment of the adjective on how positive it is.
-        Neu_scores:The sentiment of the adjective on how neutral it is.
-        Neg_scores:The sentiment of the adjective on how negative it is.
+        Neu_score:The sentiment of the adjective on how neutral it is.
+        Neg_score:The sentiment of the adjective on how negative it is.
     '''
     sia = SentimentIntensityAnalyzer()
     pos_scores=[]    
@@ -193,7 +179,6 @@ def sentiment_countifier_individual(adjectives):
     neg_scores=[] 
     for word in adjectives:    
         sentiments = sia.polarity_scores(word)
-        print(sentiments)
         pos_scores.append(sentiments["pos"])
         neu_scores.append(sentiments["neu"])
         neg_scores.append(sentiments["neg"])
