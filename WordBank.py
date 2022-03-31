@@ -31,3 +31,11 @@ word_bank = [
 ["nightman", "nightmen"],
 ["orphan", "urchin"],
 ["thief", "swindler", "conman", "crook", "pickpocket", "criminal"]]
+
+
+word_categories = ["gentleman", "lady", "politician", "lawyer", "banker",
+"clergyman", "military (high rank)", "doctor", "soldier", "businessman",
+"clerk", "policeman", "schoolteacher", "student", "innkeeper", "tailor",
+"craftsman", "seamstress", "male servant", "nurse", "governess",
+"female servant", "farmer", "waiter", "fisherman", "street peddlar",
+"washerwoman", "navvy", "miner", "nightman", "orphan", "criminal"]

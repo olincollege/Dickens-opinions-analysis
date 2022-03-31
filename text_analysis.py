@@ -12,16 +12,16 @@ from WordBank import word_bank
 
 def find_occurances_of_keyword(keyword,text):
     """
-    Find occurrences of the selected keyword within the text provided 
+    Finds occurrences of the selected keyword within the text provided 
     then return a list of indexed occurrences of the word within the text.
 
     Args: 
-        Keyword: String, the selected keyword.
-        Text: A tokenized text in the form of a list of strings.
-
+        keyword: A string which represents the selected keyword.
+        text: A tokenized text given as a list of strings of words and 
+        punctuation.
     Returns:
-        list_of_indexes: Returns a list of indexes for each occurance of the
-        keyword.
+        Returns a list of indexes (integers) for each occurance
+        of the keyword.
     """
     list_of_indexes=[]
     for index,word in enumerate(text):
@@ -31,12 +31,15 @@ def find_occurances_of_keyword(keyword,text):
 
 def find_sentences_with_keyword(keyword, text):
     """
-    Find the sentence that contextualizes the occurence of a keyword and return a list
-    of indices that represent the range of each sentence containing the keyword.
-    
+    Find the sentence that contextualizes the occurence of a keyword and return
+    a list of indices that represent the range of each sentence containing the
+    keyword. Calls on find_occurances_of_keywords to find all of the sentences. 
+    This method determines the start and end of sentences by interating through
+    the characters in the string until it hits end punctuation. 
     Args:
-        keyword: a string representing a word to contextualize in a sentence.
-        text: a tokenized text given as a list of strings of words and punctuation.
+        keyword: A string representing a word to contextualize in a sentence.
+        text: A tokenized text given as a list of strings of words and 
+        punctuation.
         
     Returns:
         A list of strings that are sentences containing the keyword.
@@ -57,21 +60,26 @@ def find_sentences_with_keyword(keyword, text):
             sentence_ranges.append((start_location, end_location))
     sentences=[]
     for range_ in sentence_ranges:
-        new_sentence=TreebankWordDetokenizer().detokenize((text[range_[0]:range_[1]]))
+        new_sentence=TreebankWordDetokenizer().detokenize(
+        (text[range_[0]:range_[1]]))
         sentences.append(new_sentence.replace(" ’ ", "’"))
     return sentences
 
-def look_for_adjectives(word,sentence):
+def look_for_adjectives(keyword,sentence):
     """
     This function parses through a provided sentence and identifies
-    if the word is an adjective. The function then returns a list of adjectives.
-    
-    Inputs:
-        Word: String representing the target keyword to be described.
-        Sentence: A string consisting of the provided sentence.
+    adjectives that are connected with the keyword. It does this by following
+    the tree of every token in the sentence until they hit the root of the
+    sentence. If the word is both an ajective and the keyword was on its path
+    to the root then the adjective is added to the list. 
+
+    Args:
+        keyword: A string representing the target keyword to be described.
+        sentence: A string consisting of the provided sentence.
     
     Returns:
-        Adjectives: a list of strings representing adjectives.
+        A list of strings representing adjectives that are used in
+        correlation with the keyword in the given sentence.
     """
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(sentence)
@@ -80,7 +88,7 @@ def look_for_adjectives(word,sentence):
         #print(token.text +" "+token.dep_+" "+token.head.text+" "+token.pos_)
         working_token=token
         while working_token.dep_ != "ROOT":
-            if working_token.head.text==word and (token.pos_==("ADJ")):
+            if working_token.head.text==keyword and (token.pos_==("ADJ")):
                 adjectives.append(token.text)
                 break
             if working_token.head.text==working_token.text:
@@ -90,14 +98,16 @@ def look_for_adjectives(word,sentence):
 
 def find_adj_in_all_sentences(keyword,path):
     '''
-    The function opens a file of text, parses through the text,
-    and adds any adjectives to a string.
+    The function opens a file of text, tokenizes the text, finsd all instances
+    of the keyword and its context, and then runs look_for_adjectives on each
+    of these sentences to get a complete list of adjectives.
     
-    Inputs:
-        Keyword: String of a set keyword
-        Path: a string of a path to a file.
+    Args:
+        Keyword: String of a keyword that is being examined
+        Path: A string that represents a path to a book
     Returns
-        Adj: list of adjectives
+        A list of adjectives in the book which are connected to the
+        keyword.
     '''
     with open(path) as book:
         contents = book.read()
@@ -110,13 +120,16 @@ def find_adj_in_all_sentences(keyword,path):
 
 def expand_keywords(keywords_):
     '''
-    The function adds plural and capitalized forms of words to the keywords list.
+    The function adds plural and capitalized forms of words to the keywords list
+    this insures that the keyword will be located even if it is at the start of
+    a sentence. 
     
-    Inputs:
-        keywords_:  a list of keywords.
+    Args:
+        keywords_: A list of keywords.
     
     Returns:
-        new_keywords: a list of keywords.
+        A list of original keywords with the addition of plurals, capitals, and
+        the capitals of the plurals.
     '''
     new_keywords=keywords_[:]
     for word in keywords_:
@@ -128,13 +141,13 @@ def expand_keywords(keywords_):
 def find_adj_in_all_books(keywords):
     '''
     The function creates of a list of all the adjectives that
-    are present in the books provided.
+    are present in the books provided. It calls on find_adj_in_all_sentences
     
-    Inputs:
-        Keywords: A string of keywords
+    Args:
+        keywords: A string of keywords.
         
     Returns:
-        Adj: A list consisting of adjectives
+        A list consisting of adjectives.
     '''
     keywords=expand_keywords(keywords)
     adj=[]
@@ -148,11 +161,11 @@ def find_adj_all_words_all_books(wordbank):
     This function creates a list of adjectives that are
     found both in the user provided word bank and in the source text.
     
-    Inputs:
-        Wordbank: List of words that have been selected by the user. It is composed of a list of occupational category.
+    Args:
+        wordbank: List of words that have been selected by the user. It is composed of a list of occupational category.
     
     Returns:
-        Adj_list: List of adjectives that have been found in the books. 
+        List of adjectives that have been found in the books. 
     '''
     adj_list = []
     for list in wordbank:
@@ -165,13 +178,15 @@ def sentiment_countifier_individual(adjectives):
     The function assigns positive, negative, and neutral 
     score values to provided adjectives and then returns the values.
     
-    Inputs:
-        Adjectives: a list of adjectives.
+    Args:
+        adjectives: a list of adjectives.
     
     Returns:
-        Pos_score: The sentiment of the adjective on how positive it is.
-        Neu_score:The sentiment of the adjective on how neutral it is.
-        Neg_score:The sentiment of the adjective on how negative it is.
+        A list of 3 integers which represent the average sentiment score of the
+        adjectives. The 3 values are as follows:
+        pos_score: The sentiment of the adjective on how positive it is.
+        neu_score:The sentiment of the adjective on how neutral it is.
+        neg_score:The sentiment of the adjective on how negative it is.
     '''
     sia = SentimentIntensityAnalyzer()
     pos_scores=[]    
