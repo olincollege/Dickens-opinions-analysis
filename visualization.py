@@ -112,11 +112,11 @@ def make_word_clouds_all_categories():
     """
     Create a word cloud of all adjectives for all word categories.
     """
-    for index,list in enumerate(adjective_lists):
-        if list==[""]:
+    for index,lists in enumerate(adjective_lists):
+        if lists==[""]:
             print(f'{word_categories[index].capitalize()} had no matches.')
             continue
-        string_version=" ".join(list)
+        string_version=" ".join(lists)
         stopwords = set(STOPWORDS)
         wordcloud = WordCloud(width = 800, height = 800,
                     background_color ='white',
@@ -136,7 +136,41 @@ def make_word_clouds_all_categories():
         plt.show()
     
         #Creating list of 5 most common words 
-        words = nltk.tokenize.word_tokenize(" ".join(list))
+        words = nltk.tokenize.word_tokenize(" ".join(lists))
+        fdist = FreqDist(w.lower() for w in words)
+        most_common= fdist.most_common(5)
+        print(f'The 5 most common adjectives are: {most_common}')
+def make_word_clouds_specific_categories(categories):
+    """
+    Create a word cloud of all adjectives for all word categories.
+    """
+    specific_adj_list=[adjective_lists[num] for num in categories]
+    specific_categories=[word_categories[num] for num in categories] 
+    for index,lists in enumerate(specific_adj_list):
+        if lists==[""]:
+            print(f'{specific_categories[index].capitalize()} had no matches.')
+            continue
+        string_version=" ".join(lists)
+        stopwords = set(STOPWORDS)
+        wordcloud = WordCloud(width = 800, height = 800,
+                    background_color ='white',
+                    stopwords = stopwords,
+                    min_font_size = 10).generate(string_version)
+    
+        # plot the WordCloud image                      
+        plt.figure(figsize = (8, 8), facecolor = None)
+        fig = plt.figure()
+        ax = fig.add_subplot()
+        fig.subplots_adjust(top=.85)
+        plt.imshow(wordcloud)
+        plt.axis("off")
+        plt.tight_layout(pad = 0)
+        ax.set_title(specific_categories[index].capitalize(), fontsize=14,
+        fontweight='bold', pad=15)
+        plt.show()
+    
+        #Creating list of 5 most common words 
+        words = nltk.tokenize.word_tokenize(" ".join(lists))
         fdist = FreqDist(w.lower() for w in words)
         most_common= fdist.most_common(5)
         print(f'The 5 most common adjectives are: {most_common}')
