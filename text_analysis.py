@@ -7,7 +7,7 @@ from nltk.tokenize.treebank import TreebankWordDetokenizer
 from nltk.sentiment import SentimentIntensityAnalyzer
 nltk.download('vader_lexicon')
 
-
+# Import list of professions and synonyms
 from WordBank import word_bank
 
 def find_occurances_of_keyword(keyword,text):
@@ -85,7 +85,6 @@ def look_for_adjectives(keyword,sentence):
     doc = nlp(sentence)
     adjectives=[]
     for token in doc:
-        #print(token.text +" "+token.dep_+" "+token.head.text+" "+token.pos_)
         working_token=token
         while working_token.dep_ != "ROOT":
             if working_token.head.text==keyword and (token.pos_==("ADJ")):
@@ -97,7 +96,7 @@ def look_for_adjectives(keyword,sentence):
     return adjectives
 
 def find_adj_in_all_sentences(keyword,path):
-    '''
+    """
     The function opens a file of text, tokenizes the text, finsd all instances
     of the keyword and its context, and then runs look_for_adjectives on each
     of these sentences to get a complete list of adjectives.
@@ -108,20 +107,19 @@ def find_adj_in_all_sentences(keyword,path):
     Returns
         A list of adjectives in the book which are connected to the
         keyword.
-    '''
+    """
     with open(path) as book:
         contents = book.read()
         text = nltk.word_tokenize(contents)
-        #parts_of_speech = nltk.pos_tag(tokens)
     adj=[]
     for item in find_sentences_with_keyword(keyword, text):
         adj+=look_for_adjectives(keyword,item)
     return adj
 
 def expand_keywords(keywords_):
-    '''
+    """
     The function adds plural and capitalized forms of words to the keywords list
-    this insures that the keyword will be located even if it is at the start of
+    this ensures that the keyword will be located even if it is at the start of
     a sentence. 
     
     Args:
@@ -130,7 +128,7 @@ def expand_keywords(keywords_):
     Returns:
         A list of original keywords with the addition of plurals, capitals, and
         the capitals of the plurals.
-    '''
+    """
     new_keywords=keywords_[:]
     for word in keywords_:
         new_keywords.append(word+"s")
@@ -172,6 +170,26 @@ def find_adj_all_words_all_books(wordbank):
         adj_list.append(find_adj_in_all_books(list))
     return adj_list
 
+def write_adj_list_to_file(wordbank, filename):
+    """
+    Find all adjectives for all lists in wordbank and write to file.
+    
+    Args:
+        wordbank: a list of lists containing synonyms for each word.
+        filename: the name of the file you wish to write your adjectives
+        to.
+    Returns:
+        none
+    """
+    adj_list = find_adj_all_words_all_books(wordbank)
+    with open(f'Outputs/{filename}.txt', 'w') as f:
+        for item in adj_list:
+            f.write(str(item) + "\n")
+
+# Write all adjectives from all books into a file
+if not os.path.exists("Outputs/all_adjectives_expanded.txt"):
+    write_adj_list_to_file(word_bank, "all_adjectives_expanded")
+
 
 def sentiment_countifier_individual(adjectives):
     '''
@@ -202,4 +220,12 @@ def sentiment_countifier_individual(adjectives):
     neg_score= sum(neg_scores) / len(neg_scores)    
     return [pos_score,neu_score,neg_score]
 
+# Read adjectives from all_adjectives file, pack into a list of lists
+with open("Outputs/all_adjectives_expanded.txt", 'r') as f:
+    adjective_lists = []
+    for line in f:
+        adj_list_single_cat = line.strip()
+        adj_list_single_cat = adj_list_single_cat.replace("'", "")
+        divided_adj_list_single_cat = adj_list_single_cat[1:-1].split(",")
+        adjective_lists.append(divided_adj_list_single_cat)
 
