@@ -1,4 +1,6 @@
-
+"""
+Test helper funtions in text_analysis.
+"""
 import nltk
 import os
 
@@ -68,7 +70,7 @@ def test_look_for_adjectives():
 
 
 def test_expand_keywords():
-    """ 
+    """
     Check that the function returns the regular plural and capitalized version\
     of a word
     """

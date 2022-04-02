@@ -1,24 +1,27 @@
-from WordBank import word_bank
+"""
+Functions to read and break up all text and identify occurances of keyword
+and their adjectives.
+"""
+
+import os
+import nltk
+import spacy
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nltk.tokenize.treebank import TreebankWordDetokenizer
-import nltk
-import os
-import spacy
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('vader_lexicon')
 
-# Import list of professions and synonyms
-
+from professions import word_bank
 
 def find_occurances_of_keyword(keyword, text):
     """
-    Finds occurrences of the selected keyword within the text provided 
+    Finds occurrences of the selected keyword within the text provided
     then return a list of indexed occurrences of the word within the text.
 
-    Args: 
+    Args:
         keyword: A string which represents the selected keyword.
-        text: A tokenized text given as a list of strings of words and 
+        text: A tokenized text given as a list of strings of words and
         punctuation.
     Returns:
         Returns a list of indexes (integers) for each occurance
@@ -35,12 +38,12 @@ def find_sentences_with_keyword(keyword, text):
     """
     Find the sentence that contextualizes the occurence of a keyword and return
     a list of indices that represent the range of each sentence containing the
-    keyword. Calls on find_occurances_of_keywords to find all of the sentences. 
+    keyword. Calls on find_occurances_of_keywords to find all of the sentences.
     This method determines the start and end of sentences by interating through
-    the characters in the string until it hits end punctuation. 
+    the characters in the string until it hits end punctuation.
     Args:
         keyword: A string representing a word to contextualize in a sentence.
-        text: A tokenized text given as a list of strings of words and 
+        text: A tokenized text given as a list of strings of words and
         punctuation.
 
     Returns:
@@ -74,7 +77,7 @@ def look_for_adjectives(keyword, sentence):
     adjectives that are connected with the keyword. It does this by following
     the tree of every token in the sentence until they hit the root of the
     sentence. If the word is both an ajective and the keyword was on its path
-    to the root then the adjective is added to the list. 
+    to the root then the adjective is added to the list.
 
     Args:
         keyword: A string representing the target keyword to be described.
@@ -125,7 +128,7 @@ def expand_keywords(keywords_):
     """
     The function adds plural and capitalized forms of words to the keywords list
     this ensures that the keyword will be located even if it is at the start of
-    a sentence. 
+    a sentence.
 
     Args:
         keywords_: A list of keywords.
@@ -158,7 +161,7 @@ def find_adj_in_all_books(keywords):
     for word in keywords:
         for book in os.listdir("BooksCleaned"):
             adj += (find_adj_in_all_sentences(word, f'BooksCleaned/{book}'))
-        return(adj)
+        return adj
 
 
 def find_adj_all_words_all_books(wordbank):
@@ -167,14 +170,15 @@ def find_adj_all_words_all_books(wordbank):
     found both in the user provided word bank and in the source text.
 
     Args:
-        wordbank: List of words that have been selected by the user. It is composed of a list of occupational category.
+        wordbank: List of words that have been selected by the user. It is
+        composed of a list of occupational category.
 
     Returns:
-        List of adjectives that have been found in the books. 
+        List of adjectives that have been found in the books.
     '''
     adj_list = []
-    for list in wordbank:
-        adj_list.append(find_adj_in_all_books(list))
+    for category_list in wordbank:
+        adj_list.append(find_adj_in_all_books(category_list))
     return adj_list
 
 
@@ -190,9 +194,9 @@ def write_adj_list_to_file(wordbank, filename):
         none
     """
     adj_list = find_adj_all_words_all_books(wordbank)
-    with open(f'Outputs/{filename}.txt', 'w') as f:
+    with open(f'Outputs/{filename}.txt', 'w') as adj_file:
         for item in adj_list:
-            f.write(str(item) + "\n")
+            adj_file.write(str(item) + "\n")
 
 
 # Write all adjectives from all books into a file
@@ -201,8 +205,8 @@ if not os.path.exists("Outputs/all_adjectives_expanded.txt"):
 
 
 def sentiment_countifier_individual(adjectives):
-    '''
-    The function assigns positive, negative, and neutral 
+    """
+    The function assigns positive, negative, and neutral
     score values to provided adjectives and then returns the values.
 
     Args:
@@ -214,7 +218,7 @@ def sentiment_countifier_individual(adjectives):
         pos_score: The sentiment of the adjective on how positive it is.
         neu_score:The sentiment of the adjective on how neutral it is.
         neg_score:The sentiment of the adjective on how negative it is.
-    '''
+    """
     sia = SentimentIntensityAnalyzer()
     pos_scores = []
     neu_scores = []
