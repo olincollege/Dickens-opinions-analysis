@@ -2,7 +2,6 @@
 Functions to read and break up all text and identify occurances of keyword
 and their adjectives.
 """
-
 import os
 import nltk
 import spacy
@@ -13,6 +12,7 @@ nltk.download('averaged_perceptron_tagger')
 nltk.download('vader_lexicon')
 
 from professions import word_bank
+
 
 def find_occurances_of_keyword(keyword, text):
     """
@@ -232,13 +232,3 @@ def sentiment_countifier_individual(adjectives):
     neu_score = sum(neu_scores) / len(neu_scores)
     neg_score = sum(neg_scores) / len(neg_scores)
     return [pos_score, neu_score, neg_score]
-
-
-# Read adjectives from all_adjectives file, pack into a list of lists
-with open("Outputs/all_adjectives_expanded.txt", 'r') as f:
-    adjective_lists = []
-    for line in f:
-        adj_list_single_cat = line.strip()
-        adj_list_single_cat = adj_list_single_cat.replace("'", "")
-        divided_adj_list_single_cat = adj_list_single_cat[1:-1].split(",")
-        adjective_lists.append(divided_adj_list_single_cat)

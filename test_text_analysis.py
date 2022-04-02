@@ -2,19 +2,21 @@
 Test helper funtions in text_analysis.
 """
 import nltk
-import os
 
-from text_analysis import *
+from text_analysis import find_occurances_of_keyword
+from text_analysis import find_sentences_with_keyword
+from text_analysis import look_for_adjectives
+from text_analysis import expand_keywords
 
-sample_text1 = "It was a tall tree. The squirrel lost its tiny hat. It had to \
+SAMPLE_TEXT1 = "It was a tall tree. The squirrel lost its tiny hat. It had to \
     climb down the tree to find the hat. 'That's unfortunate!'"
-sample_tokens1 = nltk.word_tokenize(sample_text1)
-sample_text2 = "Miriam bought a deliciously moist chapstick from Trader \
+SAMPLE_TOKENS1 = nltk.word_tokenize(SAMPLE_TEXT1)
+SAMPLE_TEXT2 = "Miriam bought a deliciously moist chapstick from Trader \
     Johan's. Malvina's mother's crispy crackers make a distracted \
     Miriam very happy."
-sample_tokens2 = nltk.word_tokenize(sample_text2)
-sample_text3 = "She had sharp and hairy elbows."
-sample_tokens3 = nltk.word_tokenize(sample_text3)
+SAMPLE_TOKENS2 = nltk.word_tokenize(SAMPLE_TEXT2)
+SAMPLE_TEXT3 = "She had sharp and hairy elbows."
+SAMPLE_TOKENS3 = nltk.word_tokenize(SAMPLE_TEXT3)
 
 
 def test_find_occurances_of_keyword():
@@ -23,13 +25,13 @@ def test_find_occurances_of_keyword():
     keyword exactly
     """
     # Test a single word that occurs once in a string
-    assert find_occurances_of_keyword("squirrel", sample_tokens1) == [7]
+    assert find_occurances_of_keyword("squirrel", SAMPLE_TOKENS1) == [7]
     # Test that a lowercase keyword is found only in lowercase form
-    assert find_occurances_of_keyword("the", sample_tokens1) == [18, 22]
+    assert find_occurances_of_keyword("the", SAMPLE_TOKENS1) == [18, 22]
     # Test that words inside of other words are not counted as occurances
-    assert find_occurances_of_keyword("hat", sample_tokens1) == [11, 23]
+    assert find_occurances_of_keyword("hat", SAMPLE_TOKENS1) == [11, 23]
     # Test that searching for a word not in the string returns an empty string
-    assert find_occurances_of_keyword("bread", sample_tokens1) == []
+    assert find_occurances_of_keyword("bread", SAMPLE_TOKENS1) == []
 
 
 def test_find_sentences_with_keyword():
@@ -37,14 +39,14 @@ def test_find_sentences_with_keyword():
     Test that the function correctly finds all sentences containing the keyword
     """
     # Check for a single sentence string
-    assert find_sentences_with_keyword("sharp", sample_tokens3) == [
+    assert find_sentences_with_keyword("sharp", SAMPLE_TOKENS3) == [
         "She had sharp and hairy elbows."]
     # Check for a a multiple sentence string
-    assert find_sentences_with_keyword("crackers", sample_tokens2) == \
+    assert find_sentences_with_keyword("crackers", SAMPLE_TOKENS2) == \
         ["Malvina's mother's crispy crackers make a distracted Miriam very "
         + "happy."]
     # Check for a a multiple sentence string, word in multiple sentences
-    assert find_sentences_with_keyword("Miriam", sample_tokens2) == [
+    assert find_sentences_with_keyword("Miriam", SAMPLE_TOKENS2) == [
         "Miriam bought a deliciously moist chapstick from Trader Johan's.",
         "Malvina's mother's crispy crackers make a distracted Miriam very"
         + " happy."]
