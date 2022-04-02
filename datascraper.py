@@ -1,29 +1,29 @@
-# Use to dowload all Dickens books from the Project Gutenberg Database
-# write them to files in folders "BooksRaw" and "BooksCleaned"
+"""
+Use to dowload all Dickens books from the Project Gutenberg Database
+write them to files in folders "BooksRaw" and "BooksCleaned"
 
-# Be sure to have pg_catalog from Project Gutenberg
-
+Be sure to have pg_catalog from Project Gutenberg
+"""
+import os
 import requests
 import pandas as pd
-import os
 
 catalog = pd.read_csv("pg_catalog.csv")
-column_name = "Authors"
-list_of_authors = catalog[column_name]
-print(list_of_authors)
+COLUMN_NAME = "Authors"
+list_of_authors = catalog[COLUMN_NAME]
 dickens_books = []
 book_indexes = catalog["Text#"]
 book_names = []
 for index, author in enumerate(list_of_authors):
-    if type(author) == float:
+    if isinstance(author, float):
         continue
     if "Dickens, Charles" in author and catalog["Language"][index] == "en" and \
             catalog["Type"][index] == "Text":
-        in_list = False
+        IN_LIST = False
         for title in book_names:
             if catalog["Title"][index] in title:
-                in_list = True
-        if in_list == False:
+                IN_LIST = True
+        if not IN_LIST:
             book_names.append(catalog["Title"][index])
             dickens_books.append(book_indexes[index])
 for books in dickens_books:
