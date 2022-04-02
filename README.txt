@@ -42,7 +42,22 @@ find_adj_all_words_all_books(wordbank): Given a list of lists of keywords (with 
 sentiment_countifier_individual(adjectives):
 given a list of adjectives it will return the average sentiment score (which is split into a positive, neutral, and negative score).
 
-Visualization.ipynb contains our figures and the code we used for visualization.  
+Visualization.py contains the code we used for visualization and the following
+function are useful for visualization:
+
+
+
+Running the code with a different wordbank:
+
+Change the wordbank to whatever set of keywords you desire. Then delete
+all_adjectives_expanded.txt. Now, if you run text_analysis.py (or run the 
+computational essay) a list of adjectives based on your new word bank will be
+generate in a new all_adjectives_expanded.txt file in the Outputs folder. 
+Warning: this function will take a very long time with any sizable wordbank. For
+example, a single word will usually take around couple of minutes, depending on how
+many times it is used in the books. 
+
+
 
 ```
 
