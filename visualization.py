@@ -2,17 +2,12 @@
 Funtions to visualize data from text analysis for all books."""
 
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
-from text_analysis import sentiment_countifier_individual
-from WordBank import word_categories
-from collections import Counter
-import collections
-from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 import nltk
-from nltk.sentiment import SentimentIntensityAnalyzer
+from text_analysis import sentiment_countifier_individual
+from professions import word_categories
 nltk.download('vader_lexicon')
 nltk.download('stopwords')
 
@@ -27,9 +22,21 @@ with open("Outputs/all_adjectives_expanded.txt", 'r') as f:
 
 
 def sentiment_score_all_adjectives(all_adjective_lists):
+    """
+    Makes a list of all the lists of the average sentiment scores for all the
+    lists of adjectives.
+
+    Args:
+        all_adjective_lists: A list containing lists of adjectives which are the
+        result of running text_analysis.py.
+    Returns:
+        A list of average sentiment scores for the lists of adjectives. Each
+        average sentiment score itself being a list of three values: the
+        positive score, the neutral score, and the negative score.
+    """
     sentiment_score_list = []
-    for list in all_adjective_lists:
-        sentiments = sentiment_countifier_individual(list)
+    for lists in all_adjective_lists:
+        sentiments = sentiment_countifier_individual(lists)
         sentiment_score_list.append(sentiments)
     return sentiment_score_list
 
@@ -58,21 +65,20 @@ def plot_scores_all_categories():
     neu_scores = []
     neg_scores = []
 
-    for category_number, category in enumerate(trimmed_word_categories):
+    for category in trimmed_word_categories:
         pos_scores.append(scores_list[category[0]][0])
         neu_scores.append(scores_list[category[0]][1])
         neg_scores.append(scores_list[category[0]][2])
 
-    bar1 = plt.bar(ind, pos_scores, width, color='g')
-    bar2 = plt.bar(ind+width, neu_scores, width, color='b')
-    bar3 = plt.bar(ind+width*2, neg_scores, width, color='r')
-
+    bars=[plt.bar(ind, pos_scores, width, color='g'),
+    plt.bar(ind+width, neu_scores, width, color='b'),
+    plt.bar(ind+width*2, neg_scores, width, color='r')]
     plt.xlabel("Category")
     plt.ylabel("Sentiment Scores")
     plt.title("Sentiment Scores by Category")
 
     plt.xticks(ind+width, trimmed_word_categories3, rotation='vertical')
-    plt.legend((bar1, bar2, bar3), ('pos', 'neu', 'neg'))
+    plt.legend((bars[1], bars[2], bars[3]), ('pos', 'neu', 'neg'))
     plt.show()
 
 
@@ -93,7 +99,7 @@ def plot_sentiments_gender_categories():
     neu_scores = []
     neg_scores = []
 
-    for category_number, category in enumerate(gender_categories):
+    for category_number, _ in enumerate(gender_categories):
         pos_scores.append(
             scores_list[gender_categories_indexes[category_number]][0])
         neu_scores.append(
@@ -132,12 +138,12 @@ def make_word_clouds_all_categories():
         # plot the WordCloud image
         plt.figure(figsize=(8, 8), facecolor=None)
         fig = plt.figure()
-        ax = fig.add_subplot()
+        subplots = fig.add_subplot()
         fig.subplots_adjust(top=.85)
         plt.imshow(wordcloud)
         plt.axis("off")
         plt.tight_layout(pad=0)
-        ax.set_title(word_categories[index].capitalize(), fontsize=14,
+        subplots.set_title(word_categories[index].capitalize(), fontsize=14,
                      fontweight='bold', pad=15)
         plt.show()
 
@@ -168,12 +174,12 @@ def make_word_clouds_specific_categories(categories):
         # plot the WordCloud image
         plt.figure(figsize=(8, 8), facecolor=None)
         fig = plt.figure()
-        ax = fig.add_subplot()
+        subplots = fig.add_subplot()
         fig.subplots_adjust(top=.85)
         plt.imshow(wordcloud)
         plt.axis("off")
         plt.tight_layout(pad=0)
-        ax.set_title(specific_categories[index].capitalize(), fontsize=14,
+        subplots.set_title(specific_categories[index].capitalize(), fontsize=14,
                      fontweight='bold', pad=15)
         plt.show()
 
